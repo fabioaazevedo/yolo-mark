@@ -501,14 +501,14 @@ int main(int argc, char *argv[])
 		bool next_by_click = false;
 		bool marks_changed = false;
 
-		int old_trackbar_value = -1, trackbar_value = 0;
-		std::string const trackbar_name = "image num";
-		int tb_res = createTrackbar(trackbar_name, window_name, &trackbar_value, image_list_count);
-
 		int old_current_obj_id = -1, current_obj_id = 0;
 		std::string const trackbar_name_2 = "object id";
 		int const max_object_id = (synset_txt.size() > 0) ? synset_txt.size() : 20;
 		int tb_res_2 = createTrackbar(trackbar_name_2, window_name, &current_obj_id, max_object_id);
+
+		int old_trackbar_value = -1, trackbar_value = 0;
+		std::string const trackbar_name = "image num";
+		int tb_res = createTrackbar(trackbar_name, window_name, &trackbar_value, image_list_count);
 
 
 		do {
@@ -585,7 +585,11 @@ int main(int argc, char *argv[])
 					Mat dst_roi = frame(rect_dst);
 					preview.copyTo(dst_roi);
 					//rectangle(frame, rect_dst, Scalar(200, 150, 200), 2);
-					putText(dst_roi, jpg_filenames[trackbar_value + i], Point2i(0, 10), FONT_HERSHEY_COMPLEX_SMALL, 0.6, Scalar::all(255));
+					int pos_filename = 0;
+					std::string const jpg_filename = jpg_filenames_path[trackbar_value + i];
+					pos_filename = 1 + jpg_filename.find_last_of("/");
+					jpg_filename = jpg_filename.substr(pos_filename);
+					putText(dst_roi, jpg_filename, Point2i(0, 10), FONT_HERSHEY_COMPLEX_SMALL, 0.7, Scalar::all(255));
 
 					if (i == 0)
 					{
@@ -626,7 +630,7 @@ int main(int argc, char *argv[])
 						catch (...) { std::cout << " Exception when try to read txt-file \n"; }
 					}
 
-					std::string const jpg_filename = jpg_filenames[trackbar_value + i];
+					//std::string const jpg_filename = jpg_filenames[trackbar_value + i];
 					std::string const filename_without_ext = jpg_filenames_without_ext[trackbar_value + i];
 					// green check-mark on the preview image if there is a lebel txt-file for this image
 					if (!std::binary_search(difference_filenames.begin(), difference_filenames.end(), filename_without_ext))
