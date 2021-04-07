@@ -1,0 +1,5 @@
+classes= 1
+train  = /home/fazevedo/Desktop/division/train.txt
+valid  = /home/fazevedo/Desktop/division/test.txt
+names = data/obj.names
+backup = backup
